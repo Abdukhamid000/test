@@ -1,17 +1,15 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-      </nav>
-    </div>
+  <div class="wrapper">
+    <LHeader />
+    <RouterLink to="/">Home</RouterLink>
+  </div>
 
   <RouterView />
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
+import LHeader from '@/components/Layouts/LHeader.vue'
+</script>
 
-</style>
+<style scoped></style>
