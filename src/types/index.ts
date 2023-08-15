@@ -18,3 +18,8 @@ export interface IResponse {
   skip: number
   total: number
 }
+
+export interface IUser {
+  first_name: string
+  last_name: string
+}

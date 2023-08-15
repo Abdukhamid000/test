@@ -1,13 +1,14 @@
 <template>
   <div>
-    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >First name</label
-    >
+    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      <slot name="label" />
+    </label>
     <input
       v-bind="$attrs"
       :value="modelValue"
+      @input="handleInput"
       type="text"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      class="bg-gray-50 border border-gray-300 text-gray-900 outline-none text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
       required
     />
   </div>
@@ -21,6 +22,11 @@ export interface Props {
 const emit = defineEmits<{
   (e: 'update:modelValue', value: Props['modelValue']): void
 }>()
+
+const handleInput = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  emit('update:modelValue', target.value)
+}
 
 defineProps<Props>()
 

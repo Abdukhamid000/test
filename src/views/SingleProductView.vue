@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+
 import SingleProduct from '@/components/SingleProduct.vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '@/composables/useApi'
@@ -23,18 +24,18 @@ const route = useRoute()
 const product = ref<IProduct>({} as IProduct)
 const isLoading = ref(true)
 
-onMounted(() => {
-  setTimeout(() => {
-    isLoading.value = false
-  }, 500)
-})
-console.log(route.params.id, 'hello')
 const fetchSingleProduct = async () => {
   console.log(route.params.id)
 
   const { data } = await useApi().$get<IProduct>(`/products/${route.params.id}`)
   product.value = data
 }
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 500)
+})
 
 fetchSingleProduct()
 </script>

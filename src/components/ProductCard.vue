@@ -18,27 +18,22 @@
       </a>
       <div class="mt-2 mb-5 flex items-center justify-between">
         <p>
-          <span class="text-3xl font-bold text-slate-900">${{ discountedPrice }}</span>
+          <span class="text-3xl font-bold text-slate-900">${{ computedDiscountedPrice }}</span>
           <span class="text-sm text-slate-900 line-through">${{ product.price }}</span>
         </p>
-        <div class="flex items-center">
-          <svg
-            aria-hidden="true"
-            class="h-5 w-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-            ></path>
-          </svg>
-        </div>
+
         <span class="mr-2 ml-3 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold">
           {{ product.rating }}
         </span>
       </div>
+      <div class="flex items-center">
+        <ul class="flex mb-4 mr-2 lg:mb-0 cursor-pointer">
+          <li v-for="star in fullStars" :key="star">★</li>
+          <li v-for="star in emptyStars" :key="star">☆</li>
+        </ul>
+      </div>
     </div>
+
     <a
       href="#"
       class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
@@ -64,6 +59,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+
+import { discountedPrice, calculateEmptyStars, calculateFullStars } from '@/utils'
 import type { IProduct } from '@/types'
 
 interface Props {
@@ -72,14 +69,12 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const discountedPrice = computed(() => {
-  const originalPrice = props.product.price
-  const discountPercentage = props.product.discountPercentage
-
-  const discountedPrice = originalPrice - originalPrice * (+discountPercentage / 100)
-
-  return discountedPrice.toFixed(2)
+const computedDiscountedPrice = computed(() => {
+  return discountedPrice(props.product.price, +props.product.discountPercentage)
 })
+
+const fullStars = computed(() => calculateFullStars(props.product.rating))
+const emptyStars = computed(() => calculateEmptyStars(props.product.rating))
 </script>
 
 <style scoped></style>
