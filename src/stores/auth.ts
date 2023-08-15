@@ -15,5 +15,5 @@ export const useAuthStore = defineStore('counter', () => {
 
   const login = (form) => {}
 
-  return { isAuthenticated, signUP }
+  return { isAuthenticated, signUP, user }
 })
