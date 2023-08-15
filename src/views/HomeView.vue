@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto pb-10">
     <div
       v-show="isLoading"
       class="bg-white fixed top-0 left-0 w-full h-full z-50 flex justify-center items-center"
@@ -7,6 +7,7 @@
       <div class="spinner"></div>
     </div>
     <span>{{ total }} products</span>
+    <span v-if="total < 1">No Product</span>
     <ul class="grid grid-cols-3 gap-5">
       <ProductCard v-for="item in products" :key="item.id" :product="item" />
     </ul>
@@ -22,38 +23,32 @@
 
 <script setup lang="ts">
 import { ref, reactive, watchEffect, onMounted } from 'vue'
+
 import ProductCard from '@/components/ProductCard.vue'
-import type { IProduct } from '@/types'
+import type { IProduct, IResponse } from '@/types'
 import { useRouter } from 'vue-router'
 
 import { useApi } from '@/composables/useApi'
+
+interface IParams {
+  limit: number
+  skip: number
+}
 
 const currentPage = ref(1)
 const products = ref<IProduct[]>([])
 const total = ref(0)
 const isLoading = ref(true)
 const router = useRouter()
+
 const params = reactive({
   limit: 12,
   skip: 0
 })
 
-interface IResponse {
-  limit: number
-  products: IProduct[]
-  skip: number
-  total: number
-}
-
-onMounted(() => {
-  setTimeout(() => {
-    isLoading.value = false
-  }, 500)
-})
-
-const fetchProducts = async (params) => {
+const fetchProducts = async (params: IParams) => {
   const { data } = await useApi().$get<IResponse>('products', { params })
-  console.log(data)
+  console.log(total)
   products.value = data.products
   total.value = data.total
 }
@@ -67,10 +62,21 @@ const onClickHandler = (page: number) => {
 }
 
 watchEffect(() => {
-  const pageQuery = router.currentRoute.value.query.page
-  if (pageQuery) {
-    currentPage.value = parseInt(pageQuery as string)
+  const pageQuery = router.currentRoute.value.query.page as string
+
+  if (+pageQuery > 9) {
+    router.replace('products/?page=1')
+    currentPage.value = 1
   }
+  if (pageQuery) {
+    currentPage.value = +pageQuery
+  }
+})
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 500)
 })
 
 fetchProducts(params)

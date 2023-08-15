@@ -1,11 +1,11 @@
 <template>
   <div>
-    <CInput />
+    <ProductCategory />
   </div>
 </template>
 
 <script setup lang="ts">
-import CInput from '@/components/Form/CInput.vue'
+import ProductCategory from '@/components/ProductCategory.vue'
 </script>
 
 <style scoped></style>

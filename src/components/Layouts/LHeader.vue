@@ -5,30 +5,26 @@
         <div class="flex items-center justify-between w-full px-4 py-2 lg:px-2">
           <ul class="hidden font-medium lg:flex">
             <li class="mr-12">
-              <a href="" class="text-gray-700 hover:text-gray-600 dark:text-gray-400">Login</a>
+              <RouterLink to="" class="text-gray-700 hover:text-gray-600 dark:text-gray-400"
+                >Login</RouterLink
+              >
+            </li>
+            <li class="mr-12">
+              <RouterLink
+                :to="{ name: 'Home' }"
+                class="text-gray-700 hover:text-gray-600 dark:text-gray-400"
+                >Home</RouterLink
+              >
+            </li>
+            <li class="mr-12">
+              <RouterLink
+                :to="{ name: 'ProductCategory' }"
+                class="text-gray-700 hover:text-gray-600 dark:text-gray-400"
+                >Category</RouterLink
+              >
             </li>
           </ul>
-          <div
-            class="items-center hidden max-w-xs py-2 pl-4 bg-white rounded-lg dark:text-gray-300 dark:bg-gray-600 lg:flex"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="currentColor"
-              class="mr-2 bi bi-search"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-              />
-            </svg>
-            <input
-              type="text"
-              class="w-full py-2 pl-3 border-0 dark:text-gray-300 dark:bg-gray-600"
-              placeholder="Search..."
-            />
-          </div>
+
           <div class="items-center justify-end hidden lg:flex dark:text-gray-400">
             <a href="" class="mr-6">
               <svg

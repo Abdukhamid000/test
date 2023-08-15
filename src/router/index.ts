@@ -5,14 +5,25 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+      path: '/products',
+      name: 'Home',
+      component: HomeView,
+      alias: '/'
     },
     {
       path: '/products/:id',
       name: 'SingleProduct',
       component: () => import('../views/SingleProductView.vue')
+    },
+    {
+      path: '/category',
+      name: 'ProductCategory',
+      component: () => import('../views/CategoryView.vue')
+    },
+    {
+      path: '/category/:good',
+      name: 'Good',
+      component: () => import('../views/SingleCategory.vue')
     }
   ]
 })

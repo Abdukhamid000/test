@@ -11,3 +11,10 @@ export interface IProduct {
   thumbnail: string
   title: string
 }
+
+export interface IResponse {
+  limit: number
+  products: IProduct[]
+  skip: number
+  total: number
+}

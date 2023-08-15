@@ -6,8 +6,8 @@
     >
       <div class="spinner"></div>
     </div>
-    <SingleProduct :product="product" />
-    <ProductReview />
+    <SingleProduct v-if="!isLoading" :product="product" />
+    <ProductReview v-if="!isLoading" />
   </div>
 </template>
 
@@ -28,8 +28,10 @@ onMounted(() => {
     isLoading.value = false
   }, 500)
 })
-
+console.log(route.params.id, 'hello')
 const fetchSingleProduct = async () => {
+  console.log(route.params.id)
+
   const { data } = await useApi().$get<IProduct>(`/products/${route.params.id}`)
   product.value = data
 }
