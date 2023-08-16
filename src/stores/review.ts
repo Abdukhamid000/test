@@ -1,21 +1,26 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useAuthStore } from './auth'
-import type { IProduct, IUser } from '@/types'
 
 interface IReview {
   productID: string
   user_name: string
   msg: string
+  rating: number
   created_at: Date
 }
 
 export const useReviewStore = defineStore('review', () => {
   const reviewList = ref<IReview[]>([])
 
+  const storedReviews = localStorage.getItem('reviews')
+  if (storedReviews) {
+    reviewList.value = JSON.parse(storedReviews)
+  }
+
   const addToReviewList = (review: IReview) => {
-    console.log(review, 'review')
     reviewList.value.push(review)
+
+    localStorage.setItem('reviews', JSON.stringify(reviewList.value))
   }
 
   return { reviewList, addToReviewList }
