@@ -67,8 +67,8 @@
                 <div class="flex flex-wrap items-center mb-6">
                   <a href="#review">
                     <ul class="flex mb-4 mr-2 lg:mb-0 cursor-pointer">
-                      <li v-for="star in fullStars" :key="star">★</li>
-                      <li v-for="star in emptyStars" :key="star">☆</li>
+                      <li v-for="(star, i) in fullStars" :key="i">★</li>
+                      <li v-for="(star, i) in emptyStars" :key="i">☆</li>
                     </ul>
                   </a>
                   <a

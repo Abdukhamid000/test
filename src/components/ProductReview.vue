@@ -41,6 +41,7 @@
           {{ item.msg }}
         </p>
         <LikeDislike
+          v-if="store.isAuthenticated"
           :liked="item.liked"
           :disliked="item.disliked"
           :review="item"
