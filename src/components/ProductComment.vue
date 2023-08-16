@@ -11,13 +11,13 @@
     </span>
     <CTextarea v-model="review.msg" class="mt-3" />
     <span class="text-red-400" v-show="isMin">msg should be at least 5 char</span>
-    <button
+    <CButton
       @click="handleClick"
       class="w-full bg-blue-500 text-white p-3 rounded-md mt-4"
       type="submit"
     >
       send review
-    </button>
+    </CButton>
   </div>
 </template>
 
@@ -28,6 +28,7 @@ import { useReviewStore } from '@/stores/review'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute } from 'vue-router'
 import '@fortawesome/fontawesome-free/css/all.css'
+import type CButton from './Common/CButton.vue'
 
 const emits = defineEmits(['onSendReview'])
 const store = useReviewStore()
