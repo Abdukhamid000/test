@@ -40,7 +40,13 @@
         <p class="text-gray-500 dark:text-gray-400">
           {{ item.msg }}
         </p>
-        <LikeDislike />
+        <LikeDislike
+          :liked="item.liked"
+          :disliked="item.disliked"
+          :review="item"
+          @like="handleLike"
+          @dislike="handleDislike"
+        />
       </article>
     </div>
 
@@ -66,6 +72,7 @@ import { useReviewStore } from '@/stores/review'
 import dayjs from 'dayjs'
 import { useRoute } from 'vue-router'
 import LikeDislike from './Common/LikeDislike.vue'
+import type { IReview } from '@/types'
 
 const isModalShown = ref(false)
 const isReviewModalOpen = ref(false)
@@ -80,6 +87,18 @@ const updateFilteredReviews = computed(() => {
 const closeModal = () => {
   isModalShown.value = false
   isReviewModalOpen.value = false
+}
+
+const handleLike = (review: IReview) => {
+  if (!review.liked && !review.disliked) {
+    reviewStore.setLikeStatus(review)
+  }
+}
+
+const handleDislike = (review: IReview) => {
+  if (!review.disliked && !review.liked) {
+    reviewStore.setDislikeStatus(review)
+  }
 }
 
 const handleClick = () => {

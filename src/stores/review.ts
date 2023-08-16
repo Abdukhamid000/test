@@ -1,13 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-
-interface IReview {
-  productID: string
-  user_name: string
-  msg: string
-  rating: number
-  created_at: Date
-}
+import type { IReview } from '@/types'
 
 export const useReviewStore = defineStore('review', () => {
   const reviewList = ref<IReview[]>([])
@@ -18,10 +11,25 @@ export const useReviewStore = defineStore('review', () => {
   }
 
   const addToReviewList = (review: IReview) => {
+    review.liked = false
+    review.disliked = false
+
     reviewList.value.push(review)
 
     localStorage.setItem('reviews', JSON.stringify(reviewList.value))
   }
 
-  return { reviewList, addToReviewList }
+  const setLikeStatus = (review: IReview) => {
+    review.liked = true
+    review.disliked = false
+    localStorage.setItem('reviews', JSON.stringify(reviewList.value))
+  }
+
+  const setDislikeStatus = (review: IReview) => {
+    review.liked = false
+    review.disliked = true
+    localStorage.setItem('reviews', JSON.stringify(reviewList.value))
+  }
+
+  return { reviewList, addToReviewList, setLikeStatus, setDislikeStatus }
 })

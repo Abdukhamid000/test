@@ -23,3 +23,13 @@ export interface IUser {
   first_name: string
   last_name: string
 }
+
+export interface IReview {
+  productID: string
+  user_name: string
+  msg: string
+  rating: number
+  created_at: Date
+  liked?: boolean
+  disliked?: boolean
+}

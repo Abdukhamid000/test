@@ -173,7 +173,7 @@ import { storeToRefs } from 'pinia'
 import type { IProduct } from '@/types'
 import { discountedPrice, calculateFullStars, calculateEmptyStars } from '@/utils'
 
-const { incrementQuantity, decrementQuantity, incrementQuantityTo, addToCart } = useCartStore()
+// const { incrementQuantity, decrementQuantity, incrementQuantityTo, addToCart } = useCartStore()
 const { count } = storeToRefs(useCartStore())
 
 interface Props {
@@ -182,13 +182,13 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const isLessThenStock = (quantity: number) => {
-  if (quantity <= props.product.stock) {
-    return true
-  }
+// const isLessThenStock = (quantity: number) => {
+//   if (quantity <= props.product.stock) {
+//     return true
+//   }
 
-  return false
-}
+//   return false
+// }
 
 const computedDiscountedPrice = computed(() => {
   return discountedPrice(props.product.price, +props.product.discountPercentage)
@@ -197,23 +197,23 @@ const computedDiscountedPrice = computed(() => {
 const fullStars = computed(() => calculateFullStars(props.product.rating))
 const emptyStars = computed(() => calculateEmptyStars(props.product.rating))
 
-const handleChange = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const newQuantity = +target.value
+// const handleChange = (e: Event) => {
+//   const target = e.target as HTMLInputElement
+//   const newQuantity = +target.value
 
-  if (isLessThenStock(newQuantity)) {
-    incrementQuantityTo(newQuantity)
-    return
-  }
+//   if (isLessThenStock(newQuantity)) {
+//     incrementQuantityTo(newQuantity)
+//     return
+//   }
 
-  incrementQuantityTo(props.product.stock)
-}
+//   incrementQuantityTo(props.product.stock)
+// }
 
-const handleIncrement = () => {
-  if (count.value < 5) {
-    incrementQuantity()
-  }
-}
+// const handleIncrement = () => {
+//   if (count.value < 5) {
+//     incrementQuantity()
+//   }
+// }
 </script>
 
 <style scoped></style>

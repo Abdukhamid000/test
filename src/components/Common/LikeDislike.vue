@@ -12,30 +12,25 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const likeCount = ref(0)
-const dislikeCount = ref(0)
-const liked = ref(false)
-const disliked = ref(false)
+const props = defineProps(['liked', 'disliked', 'review'])
+const emits = defineEmits(['like', 'dislike'])
+
+const likeCount = ref(props.review.liked ? 1 : 0)
+const dislikeCount = ref(props.review.disliked ? 1 : 0)
 
 const likeClicked = () => {
-  if (!liked.value) {
+  if (!props.liked) {
     likeCount.value++
-    liked.value = true
-    if (disliked.value) {
-      dislikeCount.value--
-      disliked.value = false
-    }
+    dislikeCount.value = 0
+    emits('like', props.review)
   }
 }
 
 const dislikeClicked = () => {
-  if (!disliked.value) {
+  if (!props.disliked) {
     dislikeCount.value++
-    disliked.value = true
-    if (liked.value) {
-      likeCount.value--
-      liked.value = false
-    }
+    likeCount.value = 0
+    emits('dislike', props.review)
   }
 }
 </script>

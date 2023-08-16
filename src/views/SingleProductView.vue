@@ -25,8 +25,6 @@ const product = ref<IProduct>({} as IProduct)
 const isLoading = ref(true)
 
 const fetchSingleProduct = async () => {
-  console.log(route.params.id)
-
   const { data } = await useApi().$get<IProduct>(`/products/${route.params.id}`)
   product.value = data
 }

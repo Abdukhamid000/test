@@ -41,13 +41,15 @@ const review = reactive({
   msg: '',
   user_name: '',
   created_at: Date.now(),
-  rating: 0
+  rating: 0,
+  liked: 0,
+  disliked: 0
 })
 
 review.productID = route.params.id as string
 
 const handleClick = () => {
-  if (review.msg.length > 5) {
+  if (review?.msg?.length > 5) {
     isMin.value = false
     emits('onSendReview')
 
