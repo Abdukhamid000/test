@@ -1,9 +1,17 @@
 <template>
   <div>
-    <button @click="likeClicked" :class="{ active: liked }">
+    <button
+      @click="likeClicked"
+      :class="{ active: liked || disliked }"
+      :disabled="liked || disliked"
+    >
       <i class="fas fa-thumbs-up"></i> {{ likeCount }}
     </button>
-    <button @click="dislikeClicked" :class="{ active: disliked }">
+    <button
+      @click="dislikeClicked"
+      :class="{ active: liked || disliked }"
+      :disabled="liked || disliked"
+    >
       <i class="fas fa-thumbs-down"></i> {{ dislikeCount }}
     </button>
   </div>
@@ -15,21 +23,22 @@ import { ref } from 'vue'
 const props = defineProps(['liked', 'disliked', 'review'])
 const emits = defineEmits(['like', 'dislike'])
 
-const likeCount = ref(props.review.liked ? 1 : 0)
-const dislikeCount = ref(props.review.disliked ? 1 : 0)
+const likeCount = ref(props.liked ? 1 : 0)
+const dislikeCount = ref(props.disliked ? 1 : 0)
+const buttonClicked = ref(false) // To track if any button has been clicked
 
 const likeClicked = () => {
-  if (!props.liked) {
+  if (!buttonClicked.value && !props.liked) {
     likeCount.value++
-    dislikeCount.value = 0
+    buttonClicked.value = true
     emits('like', props.review)
   }
 }
 
 const dislikeClicked = () => {
-  if (!props.disliked) {
+  if (!buttonClicked.value && !props.disliked) {
     dislikeCount.value++
-    likeCount.value = 0
+    buttonClicked.value = true
     emits('dislike', props.review)
   }
 }
