@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+    class="relative m-10 mx-auto flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
   >
     <RouterLink
       :to="{ name: 'SingleProduct', params: { id: product.id } }"

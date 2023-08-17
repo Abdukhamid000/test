@@ -8,7 +8,7 @@
     </div>
     <span>{{ total }} products</span>
     <span v-if="total < 1">No Product</span>
-    <ul class="grid grid-cols-3 gap-5">
+    <ul class="grid grid-cols-1 mx-auto gap-5 md:grid-cols-3">
       <ProductCard v-for="item in products" :key="item.id" :product="item" />
     </ul>
     <vue-awesome-paginate
