@@ -28,7 +28,7 @@ import { useReviewStore } from '@/stores/review'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute } from 'vue-router'
 import '@fortawesome/fontawesome-free/css/all.css'
-import type CButton from './Common/CButton.vue'
+import CButton from './Common/CButton.vue'
 
 const emits = defineEmits(['onSendReview'])
 const store = useReviewStore()
@@ -42,9 +42,7 @@ const review = reactive({
   msg: '',
   user_name: '',
   created_at: Date.now(),
-  rating: 0,
-  liked: 0,
-  disliked: 0
+  rating: 0
 })
 
 review.productID = route.params.id as string

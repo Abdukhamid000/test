@@ -15,8 +15,6 @@ export const useAuthStore = defineStore('counter', () => {
   const signUP = async (form: IUser) => {
     user.value = form
 
-    isAuthenticated.value = true
-
     localStorage.setItem('user', JSON.stringify(form))
   }
 

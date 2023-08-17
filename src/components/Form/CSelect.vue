@@ -2,156 +2,129 @@
   <div ref="select" class="relative">
     <!--  SELECTED OPTION  -->
     <div
-      :class="[
-        selectedOptionStyles,
-        error ? '!border-red' : 'focus-within:border-green',
-        { 'focus-within:border-gray-100 !cursor-not-allowed': disabled }
-      ]"
-      class="transition-200 px-3 py-2 w-[194px] bg-white-600 text-sm h-10 transition-all duration-300 border border-blue-400 cursor-pointer flex items-center justify-between rounded-lg"
-      tabindex="1"
+      class="bg-white rounded px-3 py-2.5 cursor-pointer flex items-center justify-between"
+      :class="selectedOptionStyles"
       @click="toggleSelect(!showOptions)"
     >
-      <div class="flex items-center">
-        <slot name="prefix" />
-        <slot :value="value" name="selectedOption">
-          <p
-            v-if="!value"
-            :class="{ '!text-gray': disabled }"
-            class="text-dark select-none line-clamp-1 leading-140"
-            tabindex="1"
-          >
-            {{ placeholder }}
-          </p>
-          <p
-            v-else
-            :class="{ '!text-gray': disabled }"
-            class="select-none text-dark line-clamp-1"
-            tabindex="1"
-          >
-            {{ value[labelKey] || value }}
-          </p>
+      <slot name="selectedOption" :value="value">
+        <div v-if="!value" class="text-gray-100 font-medium text-sm leading-130">
+          {{ placeholder }}
+        </div>
+        <div v-else class="text-dark text-sm font-medium leading-130">
+          {{ value[labelKey] || value }}
+        </div>
+        <slot name="chevron">
+          <span
+            class="icon-chevron rotate-90 transition-all duration-200 inline-block text-gray"
+            :class="{ '-rotate-90': showOptions }"
+          ></span>
         </slot>
-      </div>
-      <slot :show="showOptions" name="chevron">
-        <span
-          :class="[{ 'rotate-180': showOptions }]"
-          class="text-gray-700 icon-arrow-sm text-xl transition-all duration-200 inline-block shrink-0 ml-1"
-        >
-        </span>
       </slot>
     </div>
     <!--  OPTIONS  -->
     <Transition name="select">
       <div
-        v-if="showOptions && !disabled"
-        :key="showOptions"
-        class="absolute top-full w-full bg-white border border-blue-50 z-10 translate-y-3 overflow-hidden max-h-[300px] rounded"
+        v-if="showOptions"
+        class="absolute top-full w-full bg-white border border-gray-100 rounded z-10 translate-y-3 overflow-hidden"
       >
         <slot name="options">
-          <div
-            v-for="(option, idx) in options"
-            :key="idx"
-            :class="{ 'bg-gray-350': isActive(option) }"
-            class="custom-b transition-all duration-200 cursor-pointer hover:bg-gray-300 text-sm font-medium text-dark px-3"
-            @click="onSelect(option)"
-          >
+          <template v-if="options?.length">
             <div
-              :class="{
-                'border-b border-white-100': optionBorder
-              }"
-              class="h-10 py-3"
+              v-for="(option, idx) in options"
+              :key="idx"
+              :class="{ 'bg-gray-300': isActive(option) }"
+              class="transition-all duration-200 px-3 py-2.5 hover:bg-gray-300 cursor-pointer"
+              @click="onSelect(option)"
             >
-              <slot :index="idx" :option="option" name="option">
-                <div class="line-clamp-1">{{ option[labelKey] }}</div>
+              <slot name="option" :option="option" :index="idx">
+                <div class="text-dark-100 text-xs leading-130">
+                  {{ option[labelKey] }}
+                </div>
               </slot>
             </div>
-          </div>
+          </template>
+          <div v-else class="text-center py-2 text-sm text-dark">no_data_country</div>
+          <div v-if="infiniteScroll" ref="target" class="py-0.5 w-full"></div>
         </slot>
       </div>
     </Transition>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { onClickOutside } from '@vueuse/core'
+<script setup lang="ts">
+import { onClickOutside, useIntersectionObserver } from '@vueuse/core'
 import { ref, watch } from 'vue'
-import { TSelectOption } from '@/types/components/select'
 
-interface Props {
-  modelValue?: TSelectOption
-  options: TSelectOption[]
+type TOption = string | number | { [key: string]: string | number }
+
+export interface Props {
+  modelValue: TOption
+  options: TOption[]
   labelKey: string
   valueKey: string
-  placeholder?: string
   selectedOptionStyles: string
-  optionBorder?: boolean
-  dark?: boolean
-  error?: boolean
-  disabled?: boolean
+  placeholder: string
+  infiniteScroll?: boolean
 }
-
 const props = withDefaults(defineProps<Props>(), {
   labelKey: 'name',
   valueKey: 'id',
-  placeholder: 'Роль',
-  optionBorder: true,
-  options: () => [
-    {
-      name: 'Наблюдатель',
-      id: 1
-    },
-    {
-      name: 'Модератор ',
-      id: 2
-    }
-  ]
+  placeholder: 'Select an option'
 })
 
 const emit = defineEmits<{
   (e: 'on-toggle', value: boolean): void
   (e: 'update:modelValue', value: boolean): void
-  (e: 'load'): void
-  (e: 'on-select', value: TSelectOption): void
+  (e: 'infinite-scroll'): void
 }>()
 
 const showOptions = ref(false)
+const target = ref(null)
+const targetIsVisible = ref(false)
 
 function toggleSelect(newValue = showOptions.value) {
   showOptions.value = newValue
   emit('on-toggle', showOptions.value)
 }
 
-function findOption(option: TSelectOption) {
+function findOption(option: TOption) {
+  console.log(option, 'option')
   return props.options.find((o) => o === option || o[props.valueKey] === option)
 }
 
 const value = ref(findOption(props.modelValue))
-
-function onSelect(option: TSelectOption) {
+function onSelect(option: TOption) {
   value.value = option
   toggleSelect(false)
   emit('update:modelValue', option[props.valueKey] || option)
-  emit('on-select', option)
 }
 
 const select = ref()
 onClickOutside(select, () => toggleSelect(false))
 
-function isActive(option: TSelectOption) {
-  return (
-    option === value.value ||
-    option[props.valueKey as keyof typeof option] === value.value ||
-    (typeof value.value === 'object' &&
-      option[props.valueKey as keyof typeof option] === value.value[props.valueKey])
-  )
+function isActive(option: TOption) {
+  return option === value.value || value.value?.id === option?.id || option?.id === value.value
 }
-
+const { stop } = useIntersectionObserver(target, ([{ isIntersecting }], observerElement) => {
+  targetIsVisible.value = isIntersecting
+})
+watch(
+  () => targetIsVisible.value,
+  (newValue) => {
+    if (newValue) {
+      emit('infinite-scroll')
+    }
+  }
+)
 watch(
   () => props.modelValue,
-  (newValue) => {
-    value.value = findOption(newValue)
+  (val) => {
+    console.log(val, 'val')
+    value.value = findOption(props.modelValue)
   },
-  { immediate: true }
+  {
+    immediate: true
+  }
 )
 </script>
 
@@ -165,9 +138,5 @@ watch(
 .select-leave-to {
   opacity: 0;
   transform: translateY(-5px);
-}
-
-.custom-b:last-child div:first-child {
-  border-bottom: 0 !important;
 }
 </style>
