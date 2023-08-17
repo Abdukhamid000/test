@@ -53,10 +53,10 @@
                 />
               </svg>
 
-              <span
+              <!-- <span
                 class="text-xs w-3 h-3 text-center rounded-full top-0 right-0 bg-yellow-300 absolute"
                 >{{ store.count }}</span
-              >
+              > -->
             </span>
             <a
               href=""
