@@ -2,15 +2,15 @@
   <div ref="select" class="relative">
     <!--  SELECTED OPTION  -->
     <div
-      class="bg-white rounded px-3 py-2.5 cursor-pointer flex items-center justify-between"
+      class="bg-slate-100 rounded px-3 py-2.5 cursor-pointer flex items-center justify-between"
       :class="selectedOptionStyles"
       @click="toggleSelect(!showOptions)"
     >
       <slot name="selectedOption" :value="value">
-        <div v-if="!value" class="text-gray-100 font-medium text-sm leading-130">
+        <div v-if="!value" class="text-black font-medium text-sm leading-130">
           {{ placeholder }}
         </div>
-        <div v-else class="text-dark text-sm font-medium leading-130">
+        <div v-else class="text-sm font-medium leading-130">
           {{ value[labelKey] || value }}
         </div>
         <slot name="chevron">
