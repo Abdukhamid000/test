@@ -51,7 +51,8 @@
       </article>
     </div>
 
-    <CModal v-if="!store.isAuthenticated" @close="closeModal" :show="isModalShown" noHeader>
+    <CModal v-if="!store.isAuthenticated" @close="closeModal" :show="isModalShown" title="">
+      <template #head></template>
       <TabsComponent />
     </CModal>
 

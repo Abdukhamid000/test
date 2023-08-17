@@ -4,11 +4,10 @@
       <nav class="flex justify-between">
         <div class="flex items-center justify-between w-full px-4 py-2 lg:px-2">
           <ul class="hidden font-medium lg:flex">
-            <li class="mr-12">
-              <RouterLink to="" class="text-gray-700 hover:text-gray-600 dark:text-gray-400"
-                >Login</RouterLink
-              >
+            <li class="mr-12 cursor-pointer" v-if="store.isAuthenticated" @click="store.logOut">
+              logout
             </li>
+
             <li class="mr-12">
               <RouterLink
                 :to="{ name: 'Home' }"
@@ -89,16 +88,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+
 // import CModal from '../Common/CModal.vue'
 // import ShoppingCart from '../ShoppingCart.vue'
-
-import { useCartStore } from '@/stores/cart'
-const store = useCartStore()
-const isModalShown = ref(false)
-
-const openShoppingCart = () => {
-  isModalShown.value = true
-}
+const store = useAuthStore()
 </script>
 
 <style scoped></style>

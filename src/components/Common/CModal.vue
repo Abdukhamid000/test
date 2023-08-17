@@ -10,12 +10,14 @@
         <div
           v-if="show"
           :class="[modalClass]"
-          class="bg-white p-5 rounded-lg w-full max-w-xl shadow-xl"
+          class="bg-white p-5 rounded-lg w-full max-w-xl shadow-xl relative"
         >
-          <div class="flex items-center" v-if="!noHeader">
+          <div class="inline-flex justify-end items-center" v-if="!noHeader">
             <h3 class="w-full text-xl">{{ title }}</h3>
             <!-- Replace it with your icon -->
-            <button class="w-max shrink-0 text-3xl" @click="$emit('close')">&times;</button>
+            <button class="w-max shrink-0 text-3xl absolute right-4 top-2" @click="$emit('close')">
+              &times;
+            </button>
           </div>
           <slot></slot>
         </div>

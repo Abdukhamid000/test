@@ -3,8 +3,8 @@
     <CInput v-model="user.first_name">
       <template #label>FirstName</template>
     </CInput>
-    <CInput v-model="user.last_name">
-      <template #label>LastName</template>
+    <CInput v-model="user.password" type="password">
+      <template #label>Password</template>
     </CInput>
 
     <button class="w-full bg-blue-500 text-white p-3 rounded-md" type="submit">Submit</button>
@@ -20,11 +20,11 @@ const { signUP } = useAuthStore()
 
 const user = reactive({
   first_name: '',
-  last_name: ''
+  password: ''
 })
 
 const handleSubmit = () => {
-  if (user.first_name && user.last_name !== '') {
+  if (user.first_name && user.password !== '') {
     signUP(user)
   }
 }
