@@ -22,13 +22,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive } from 'vue'
+
 import CTextarea from '@/components/Form/CTextarea.vue'
 import { useReviewStore } from '@/stores/review'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute } from 'vue-router'
-import '@fortawesome/fontawesome-free/css/all.css'
 import CButton from './Common/CButton.vue'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 const emits = defineEmits(['onSendReview'])
 const store = useReviewStore()

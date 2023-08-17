@@ -32,7 +32,6 @@
             <div
               v-for="(option, idx) in options"
               :key="idx"
-              :class="{ 'bg-gray-300': isActive(option) }"
               class="transition-all duration-200 px-3 py-2.5 hover:bg-gray-300 cursor-pointer"
               @click="onSelect(option)"
             >
@@ -102,9 +101,6 @@ function onSelect(option: TOption) {
 const select = ref()
 onClickOutside(select, () => toggleSelect(false))
 
-function isActive(option: TOption) {
-  return option === value.value || value.value?.id === option?.id || option?.id === value.value
-}
 const { stop } = useIntersectionObserver(target, ([{ isIntersecting }], observerElement) => {
   targetIsVisible.value = isIntersecting
 })

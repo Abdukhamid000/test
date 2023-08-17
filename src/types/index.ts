@@ -29,7 +29,7 @@ export interface IReview {
   user_name: string
   msg: string
   rating: number
-  created_at: Date
+  created_at: number
   liked?: boolean
   disliked?: boolean
 }
